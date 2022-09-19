@@ -9,8 +9,8 @@ const Intern = require("./lib/Intern");
 //WHEN I start the application
 //THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
 
-function promptForManager() {
-  const questions = [
+async function promptForManager() {
+  return inquirer.prompt([
     {
       type: "input",
       name: "name",
@@ -28,25 +28,14 @@ function promptForManager() {
     },
     {
       type: "input",
-      name: "office",
+      name: "officeNumber",
       message: "Enter the team Manager's office number",
     },
-  ];
-
-  inquirer.prompt(questions).then((answers) => {
-    const manager = new Manager(
-      answers.name,
-      answers.id,
-      answers.email,
-      answers.office
-    );
-
-    return manager;
-  });
+  ]);
 }
 
-function promptForEngineer(engineer) {
-  const questions = [
+async function promptForEngineer(engineer) {
+  return inquirer.prompt([
     {
       type: "input",
       name: "name",
@@ -67,20 +56,11 @@ function promptForEngineer(engineer) {
       name: "github",
       message: "Enter the Engineer's GitHub username",
     },
-  ];
-  inquirer.prompt(questions).then((answers) => {
-    const engineer = new Engineer(
-      answers.name,
-      answers.id,
-      answers.email,
-      answers.github
-    );
-    return engineer;
-  });
+  ]);
 }
 
-function promptForIntern(intern) {
-  const questions = [
+async function promptForIntern(intern) {
+  return inquirer.prompt([
     {
       type: "input",
       name: "name",
@@ -101,48 +81,56 @@ function promptForIntern(intern) {
       name: "school",
       message: "Enter the Intern's school",
     },
-  ];
-  inquirer.prompt(questions).then((answers) => {
-    const intern = new Intern(
-      answers.name,
-      answers.id,
-      answers.email,
-      answers.school
-    );
-    return intern;
-  });
+  ]);
 }
 
-function promptForMoreEmployee() {
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "menu",
-        message: "Select another type of employee to add",
-        choices: ["Engineer", "Intern", "I have no more employees to add"],
-      },
-    ])
-    .then((answers) => {
-      return answers;
-    });
+async function promptForMoreEmployee() {
+  return inquirer.prompt([
+    {
+      type: "list",
+      name: "selection",
+      message: "Select another type of employee to add",
+      choices: ["Engineer", "Intern", "No more employees"],
+    },
+  ]);
 }
 
-function init() {
-  const manager = promptForManager();
+async function init() {
+  const managerAnswer = await promptForManager();
+  const manager = new Manager(
+    managerAnswer.name,
+    managerAnswer.id,
+    managerAnswer.email,
+    managerAnswer.officeNumber
+  );
+
   const engineers = [];
   const interns = [];
 
-  let promptForMoreEmployee = true;
+  let hasMoreEmployee = true;
 
-  while (promptForMoreEmployee) {
-    const selection = promptForMoreEmployee();
-    if (selection === "I have no more employees to add") {
-      promptForMoreEmployee = false;
-    } else if (selection === "Engineer") {
-      const engineer = promptForEngineer();
-    } else if (selection === "Intern") {
-      const intern = promptForIntern();
+  console.log("Im Here");
+
+  while (hasMoreEmployee) {
+    const selectionAnswer = await promptForMoreEmployee();
+    if (selectionAnswer.selection === "No more employees") {
+      hasMoreEmployee = false;
+    } else if (selectionAnswer.selection === "Engineer") {
+      const engineerAnswer = await promptForEngineer();
+      const engineer = new Engineer(
+        engineerAnswer.name,
+        engineerAnswer.id,
+        engineerAnswer.email,
+        engineerAnswer.github
+      );
+    } else if (selectionAnswer.selection === "Intern") {
+      const internAnswer = await promptForIntern();
+      const intern = new Intern(
+        internAnswer.name,
+        internAnswer.id,
+        internAnswer.email,
+        internAnswer.school
+      );
     }
   }
 }

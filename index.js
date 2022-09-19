@@ -9,7 +9,7 @@ const Intern = require("./lib/Intern");
 //WHEN I start the application
 //THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
 
-function addManager() {
+function promptForManager() {
   const questions = [
     {
       type: "input",
@@ -31,23 +31,21 @@ function addManager() {
       name: "office",
       message: "Enter the team Manager's office number",
     },
-    {
-      type: "list",
-      name: "menu",
-      message: "Select another type of employee to add",
-      choices: ["Engineer", "Intern", "I have no more employees to add"],
-    },
   ];
-  return questions;
+
+  inquirer.prompt(questions).then((answers) => {
+    const manager = new Manager(
+      answers.name,
+      answers.id,
+      answers.email,
+      answers.office
+    );
+
+    return manager;
+  });
 }
 
-function addEngineer(engineer) {
-  const employee = new Employee(
-    answers.name,
-    answers.id,
-    answers.email,
-    answers.office
-  );
+function promptForEngineer(engineer) {
   const questions = [
     {
       type: "input",
@@ -69,17 +67,19 @@ function addEngineer(engineer) {
       name: "github",
       message: "Enter the Engineer's GitHub username",
     },
-    {
-      type: "list",
-      name: "menu",
-      message: "Select another type of employee to add",
-      choices: ["Engineer", "Intern", "I have no more employees to add"],
-    },
   ];
-  return questions;
+  inquirer.prompt(questions).then((answers) => {
+    const engineer = new Engineer(
+      answers.name,
+      answers.id,
+      answers.email,
+      answers.github
+    );
+    return engineer;
+  });
 }
 
-function addIntern(intern) {
+function promptForIntern(intern) {
   const questions = [
     {
       type: "input",
@@ -101,35 +101,50 @@ function addIntern(intern) {
       name: "school",
       message: "Enter the Intern's school",
     },
-    {
-      type: "list",
-      name: "menu",
-      message: "Select another type of employee to add",
-      choices: ["Engineer", "Intern", "I have no more employees to add"],
-    },
   ];
-  return questions;
-}
-
-function init() {
-  inquirer.prompt(addManager()).then((answers) => {
-    const manager = new Manager(
+  inquirer.prompt(questions).then((answers) => {
+    const intern = new Intern(
       answers.name,
       answers.id,
       answers.email,
-      answers.office
+      answers.school
     );
-    const selection = answers.menu;
-    nextEmployee(selection);
+    return intern;
   });
 }
 
-function nextEmployee(selection) {
-  if (selection === "I have no more employees to add") {
-    return;
-  } else if (selection === "Engineer") {
-    addEngineer();
-  } else if (selection === "Intern") {
-    addIntern();
+function promptForMoreEmployee() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "menu",
+        message: "Select another type of employee to add",
+        choices: ["Engineer", "Intern", "I have no more employees to add"],
+      },
+    ])
+    .then((answers) => {
+      return answers;
+    });
+}
+
+function init() {
+  const manager = promptForManager();
+  const engineers = [];
+  const interns = [];
+
+  let promptForMoreEmployee = true;
+
+  while (promptForMoreEmployee) {
+    const selection = promptForMoreEmployee();
+    if (selection === "I have no more employees to add") {
+      promptForMoreEmployee = false;
+    } else if (selection === "Engineer") {
+      const engineer = promptForEngineer();
+    } else if (selection === "Intern") {
+      const intern = promptForIntern();
+    }
   }
 }
+
+init();

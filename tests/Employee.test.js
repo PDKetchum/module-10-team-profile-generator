@@ -1,21 +1,25 @@
 const Employee = require("../lib/Employee");
 
 describe("Employee", () => {
+  const e = new Employee("Pachia", 0, "email@email.com");
+
   it("Should create employee instance", () => {
-    const e = new Employee();
-    expect(typeof e.toBe("object"));
+    expect(typeof e).toBe("object");
   });
   it("Should have name", () => {
     const name = "Pachia";
-    expect(typeof e.name.toBe(name));
+    expect(e.getName()).toBe(name);
   });
   it("Should have an id", () => {
     const id = 0;
-    expect(typeof e.id.toBe(id));
+    expect(e.getId()).toBe(id);
   });
   it("Should have email", () => {
     const email = "email@email.com";
-    const e = new Employee("Pachia", 0, email);
-    expect(typeof e.email.toBe(email));
+    expect(e.getEmail()).toBe(email);
+  });
+  it("Role should be Employee", () => {
+    const role = "Employee";
+    expect(e.getRole()).toBe(role);
   });
 });

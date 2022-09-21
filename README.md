@@ -19,4 +19,4 @@ The application takes in user input and inserts it into a template which then ge
 GitHub URL: https://github.com/PDKetchum/module-10-team-profile-generator
 
 ![](screenshot.png)
-_Screenshot of page_
+_Screenshot of page created_

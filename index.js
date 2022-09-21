@@ -174,7 +174,7 @@ function generateHtmlPage(manager, engineers, interns) {
         <div class="card-body">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">ID: ${manager.getId()}</li>
-            <li class="list-group-item">Email: Email: <a href="mailto${manager.getEmail()}">${manager.getEmail()}</a></li>
+            <li class="list-group-item">Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
             <li class="list-group-item">Office Number: ${manager.getOfficeNumber()}</li>
           </ul>
         </div>
@@ -210,7 +210,7 @@ function generateHtmlEngineer(engineer) {
     <div class="card-body">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">ID: ${engineer.getId()}</li>
-        <li class="list-group-item">Email: <a href="mailto${engineer.getEmail()}">${engineer.getEmail()}</a></li>
+        <li class="list-group-item">Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
         <li class="list-group-item">GitHub: <a href="https://github.com/${engineer.getGithub()}">${engineer.getGithub()}</a></li>
       </ul>
     </div>
@@ -228,7 +228,7 @@ function generateHtmlIntern(intern) {
     <div class="card-body">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">ID: ${intern.getId()}</li>
-        <li class="list-group-item">Email: Email: <a href="mailto${intern.getEmail()}">${intern.getEmail()}</a></li>
+        <li class="list-group-item">Email: <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></li>
         <li class="list-group-item">School: ${intern.getSchool()}</li>
       </ul>
     </div>

@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 
+// adds all required files
 const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
@@ -92,6 +93,7 @@ async function promptForMoreEmployee() {
   ]);
 }
 
+// Starts with prompting for manager information
 async function init() {
   const managerAnswer = await promptForManager();
   const manager = new Manager(
@@ -101,16 +103,19 @@ async function init() {
     managerAnswer.officeNumber
   );
 
+  // Creates an array to store engineers and interns added
   const engineers = [];
   const interns = [];
 
   let hasMoreEmployee = true;
 
+  // As long as the user has more employees to add, continue showing promptForMoreEmployee() function until false ("No more employees")
   while (hasMoreEmployee) {
     const selectionAnswer = await promptForMoreEmployee();
     if (selectionAnswer.selection === "No more employees") {
       hasMoreEmployee = false;
     } else if (selectionAnswer.selection === "Engineer") {
+      // If user selects engineer, create engineer and push to engineers array
       const engineerAnswer = await promptForEngineer();
       const engineer = new Engineer(
         engineerAnswer.name,
@@ -120,6 +125,7 @@ async function init() {
       );
       engineers.push(engineer);
     } else if (selectionAnswer.selection === "Intern") {
+      // If user selects intern, create intern and push to interns array
       const internAnswer = await promptForIntern();
       const intern = new Intern(
         internAnswer.name,
@@ -143,6 +149,7 @@ function writeToFile(fileName, data) {
   );
 }
 
+// Passes through manager, engineers, and interns to have access to all employees created
 function generateHtmlPage(manager, engineers, interns) {
   return `
 <!DOCTYPE html>
@@ -187,6 +194,7 @@ function generateHtmlPage(manager, engineers, interns) {
   `;
 }
 
+// generates the html for each engineer and intern in their stored arrays
 function generateEmployeeHtml(engineers, interns) {
   let addEmployeesinfo = "";
   for (let i = 0; i < engineers.length; i++) {
